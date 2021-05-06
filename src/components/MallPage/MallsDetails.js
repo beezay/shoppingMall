@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
-import uuid from "react-uuid";
 import { fireStore, storage } from "../../firebase/firebase";
-import {
-  resetShops,
-  selectedAllMalls,
-  SelectIsAdmin,
-} from "../../redux/MallSlice";
+import { SelectIsAdmin } from "../../redux/MallSlice";
 import { deleteShopStorage } from "../../utils/Delete";
-import Alert from "../common/Alert";
+import AddedToast from "../common/AddedToast";
 import Card from "../common/Card";
 import DeleteAlert from "../common/DeleteAlert";
 import Loader from "../common/Loader";
+import NoSearchedData from "../common/NoSearchedData";
 import ShopAddForm from "../common/ShopAddForm";
-import Malls from "../HomePage/Malls";
 import SearchMall from "../Search/SearchMall";
 import "./Details.css";
 const MallsDetails = () => {
@@ -29,16 +24,12 @@ const MallsDetails = () => {
   const [filterShops, setFilterShops] = useState([]);
   const [isLoding, setIsLoading] = useState(true);
   const [deleteToast, setDeleteToast] = useState(false);
-  const [toast, setToast] = useState(true);
+  const [toast, setToast] = useState(false);
+  const [searchError, setSearchError] = useState(false);
 
   const isAdmin = useSelector(SelectIsAdmin);
 
-  const {
-    handleSubmit,
-    formState: { errors },
-    register,
-    reset,
-  } = useForm();
+  const { reset } = useForm();
 
   useEffect(() => {
     const fetchMalls = async () => {
@@ -131,8 +122,12 @@ const MallsDetails = () => {
     setFilterShops([...dbShops, shopData]);
     setMall(newMall);
     setShopImages([]);
+    setToast(true);
     setIsSubmitting(false);
     setAddShopStatus(false);
+    setTimeout(() => {
+      setToast(false);
+    }, 1000);
   };
   console.log("Mall", mall);
 
@@ -144,8 +139,10 @@ const MallsDetails = () => {
         shop.shopName.match(searchRegex)
       );
       console.log(searchedShop);
+      searchedShop?.length <= 0 && setSearchError(true);
       setFilterShops(searchedShop);
     } else {
+      setSearchError(false);
       setFilterShops(mall.shops);
     }
   };
@@ -172,6 +169,7 @@ const MallsDetails = () => {
 
   return (
     <>
+      {toast && <AddedToast />}
       {deleteToast && <DeleteAlert />}
       {isLoding && <Loader />}
       {addShopStatus && (
@@ -224,6 +222,9 @@ const MallsDetails = () => {
               />
             </div>
             <div className="container-fluid text-center">
+              <div className="searcherror mt-4 w-75 ml-auto mr-auto">
+                {searchError && <NoSearchedData />}
+              </div>
               <div className=" mt-5 shop-card-container">
                 {filterShops &&
                   filterShops.map((shop) => (
