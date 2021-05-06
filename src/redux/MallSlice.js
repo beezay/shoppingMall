@@ -36,7 +36,7 @@ const mallSlice = createSlice({
             ? {
                 ...shop,
                 shopImages: shop.shopImages.filter(
-                  (img) => img.shopImgId !== action.payload.imgId
+                  (img) => img.id !== action.payload.imgId
                 ),
               }
             : shop

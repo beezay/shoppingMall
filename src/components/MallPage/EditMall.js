@@ -12,6 +12,7 @@ import {
   selectNewAddedShops,
 } from "../../redux/MallSlice";
 import AddedAlert from "../common/AddedAlert";
+import AddedToast from "../common/AddedToast";
 import Alert from "../common/Alert";
 import MallForm from "../common/MallForm";
 import AddedMallDetails from "./AddedMallDetails";
@@ -28,6 +29,7 @@ const EditMall = (props) => {
   const [imageError, setImageError] = useState();
   const [shopAdd, setShopAdd] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState(false);
 
   const {
     handleSubmit,
@@ -187,7 +189,7 @@ const EditMall = (props) => {
 
   return (
     <>
-      This is Edit page
+      {toast && <AddedToast />}
       <div className="container-fluid">
         {/* {showInfo && (
           <AddedAlert title="Mall has been Edited Sucessfully!!!" />
@@ -209,6 +211,7 @@ const EditMall = (props) => {
             mallImgPreview={imgPreview}
             newMallImage={newMallImage}
             edit={true}
+            setToast={setToast}
           />
         )}
       </div>

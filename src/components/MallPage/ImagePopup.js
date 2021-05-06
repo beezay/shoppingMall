@@ -5,7 +5,7 @@ import { removeSingleShopImage, selectAddedShops } from "../../redux/MallSlice";
 const ImagePopup = ({ shopImages, setShowPopup, shopId, edit }) => {
   const [hoverStatus, setHoverStatus] = useState(false);
 
-  console.log(shopImages);
+  console.log("props=>", shopImages);
 
   const dispatch = useDispatch();
 
