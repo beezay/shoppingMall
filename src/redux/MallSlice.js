@@ -46,7 +46,7 @@ const mallSlice = createSlice({
             ? {
                 ...shop,
                 shopImages: shop.shopImages.filter(
-                  (img) => img.shopImgId !== action.payload.imgId
+                  (img) => img.id !== action.payload.imgId
                 ),
               }
             : shop
@@ -76,10 +76,10 @@ const mallSlice = createSlice({
     },
 
     setAdmin: (state, action) => {
-      console.log('Admin CHeck',action.payload);
+      console.log("Admin CHeck", action.payload);
       return {
         ...state,
-        isAdmin: action.payload === "true" ? true : false
+        isAdmin: action.payload === "true" ? true : false,
       };
     },
 

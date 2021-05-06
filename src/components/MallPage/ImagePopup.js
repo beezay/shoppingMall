@@ -10,6 +10,7 @@ const ImagePopup = ({ shopImages, setShowPopup, shopId, edit }) => {
   const dispatch = useDispatch();
 
   const handleShopImageDelete = (imgId) => {
+    console.log(shopImages);
     console.log(shopId, imgId);
     // const data = addedShops.map(shop => {
     //   if(shop.id === shopId) {}
@@ -46,7 +47,7 @@ const ImagePopup = ({ shopImages, setShowPopup, shopId, edit }) => {
             />
             <span
               className="remove-shop-image"
-              onClick={() => handleShopImageDelete(imgItem.shopImgId)}
+              onClick={() => handleShopImageDelete(imgItem.id)}
             >
               X
             </span>
