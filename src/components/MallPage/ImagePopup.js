@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { removeSingleShopImage, selectAddedShops } from "../../redux/MallSlice";
+import { useDispatch } from "react-redux";
+import { removeSingleShopImage } from "../../redux/MallSlice";
 
 const ImagePopup = ({ shopImages, setShowPopup, shopId, edit }) => {
   const [hoverStatus, setHoverStatus] = useState(false);

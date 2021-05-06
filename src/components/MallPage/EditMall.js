@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
-import uuid from "react-uuid";
+
 import { fireStore, storage } from "../../firebase/firebase";
 import {
   addShops,
@@ -11,13 +11,10 @@ import {
   selectAddedShops,
   selectNewAddedShops,
 } from "../../redux/MallSlice";
-import AddedAlert from "../common/AddedAlert";
+
 import AddedToast from "../common/AddedToast";
-import Alert from "../common/Alert";
+
 import MallForm from "../common/MallForm";
-import AddedMallDetails from "./AddedMallDetails";
-import AddShop from "./AddShop";
-import MallPreview from "./MallPreview";
 
 const EditMall = (props) => {
   const [allMalls, setAllMalls] = useState([]);
@@ -31,12 +28,7 @@ const EditMall = (props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toast, setToast] = useState(false);
 
-  const {
-    handleSubmit,
-    formState: { errors },
-    reset,
-    register,
-  } = useForm();
+  const { reset } = useForm();
 
   const dispatch = useDispatch();
   const history = useHistory();

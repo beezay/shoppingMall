@@ -1,23 +1,14 @@
 import React, { useState } from "react";
-import AddShop from "./AddShop";
 
 import { fireStore, storage } from "../../firebase/firebase";
 
 import "./AddForm.css";
 import { withRouter } from "react-router";
 import { useForm } from "react-hook-form";
-import Alert from "../common/Alert";
 import AddedAlert from "../common/AddedAlert";
 import { useDispatch, useSelector } from "react-redux";
-import AddedMallDetails from "./AddedMallDetails";
-import MallPreview from "./MallPreview";
-import {
-  selectAddedShops,
-  removeShop,
-  resetShops,
-} from "../../redux/MallSlice";
-import uuid from "react-uuid";
-import FileTypeError from "../common/FileTypeError";
+import { selectAddedShops, resetShops } from "../../redux/MallSlice";
+
 import AddedToast from "../common/AddedToast";
 import MallForm from "../common/MallForm";
 const AddMall = ({ history }) => {
@@ -33,13 +24,7 @@ const AddMall = ({ history }) => {
 
   const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
   const dispatch = useDispatch();
-  const {
-    register,
-
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm();
+  const { reset } = useForm();
 
   const handleAddShop = (val) => {
     if (shopAdd) {
