@@ -55,7 +55,7 @@ const Dashboard = ({ history }) => {
       console.log("allMalls", allMalls);
       setFilteredMalls(searchedMall);
     } else {
-      setFilteredMalls(allMalls.slice(0, 3));
+      setFilteredMalls(allMalls.slice(0, 2));
     }
   };
 
@@ -92,7 +92,11 @@ const Dashboard = ({ history }) => {
           </div>
           {allMalls.length > 0 ? (
             <div className="wrapper-container malls-container">
-              <Malls allMalls={allMalls} filterMalls={filteredMalls} />
+              <Malls
+                allMalls={allMalls}
+                filterMalls={filteredMalls}
+                setFilterMalls={setFilteredMalls}
+              />
               <p className="show-more" onClick={handleAllMalls}>
                 {allMalls.length > 3 ? "View All" : ""}
               </p>

@@ -44,7 +44,7 @@ const Shops = ({ shops, malls }) => {
               name={
                 shop?.shops[0]?.shopName
                   ? shop?.shops[0]?.shopName
-                  : "NO SHOPS!!!"
+                  : "NO SHOPS FOR"
               }
               imgUrl={shop?.shops[0]?.shopImages[0]?.shopImgUrl}
               address={shop?.mallName}

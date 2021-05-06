@@ -30,7 +30,7 @@ const ImagePopup = ({ shopImages, setShowPopup, shopId, edit }) => {
           <div className="shop-image-popup-container">
             <img
               src={
-                edit === "true"
+                edit
                   ? imgItem.shopImgUrl
                   : URL.createObjectURL(imgItem.shopImgUrl)
               }

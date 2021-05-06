@@ -8,7 +8,7 @@ import FileTypeError from "../common/FileTypeError";
 import ShopAddForm from "../common/ShopAddForm";
 import AddedToast from "../common/AddedToast";
 
-const AddShop = ({ setShopAdd, shopDetails, type, setToast }) => {
+const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
   console.log(shopDetails);
 
   const [images, setImages] = useState([]);
@@ -51,7 +51,7 @@ const AddShop = ({ setShopAdd, shopDetails, type, setToast }) => {
   };
 
   const check = (data) => {
-    type === "edit" ? dispatch(addNewShops(data)) : dispatch(addShops(data));
+    edit ? dispatch(addNewShops(data)) : dispatch(addShops(data));
   };
 
   const handleShopSubmit = (data) => {

@@ -3,8 +3,10 @@ import { useHistory } from "react-router";
 import { deleteMallStorage } from "../../utils/Delete";
 import Card from "../common/Card";
 import DeleteAlert from "../common/DeleteAlert";
+import Loader from "../common/Loader";
 
-const Malls = ({ filterMalls }) => {
+const Malls = ({ filterMalls, allMalls, setFilterMalls }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [deleteToast, setDeleteToast] = useState(false);
   const history = useHistory();
 
@@ -17,7 +19,11 @@ const Malls = ({ filterMalls }) => {
     console.log(mallId);
     let confirm = window.confirm("Are you sure to Delete Mall??");
     if (confirm) {
+      setIsLoading(true);
       await deleteMallStorage(filterMalls, mallId);
+      let newMalls = allMalls.filter((x) => x.id !== mallId);
+      setFilterMalls(newMalls);
+      setIsLoading(false);
       setDeleteToast(true);
       setTimeout(() => {
         setDeleteToast(false);
@@ -27,6 +33,7 @@ const Malls = ({ filterMalls }) => {
 
   return (
     <>
+      {isLoading && <Loader />}
       {deleteToast && <DeleteAlert />}
       <div className="malls-wrapper">
         <div className="mall-heading">
