@@ -146,6 +146,7 @@ const AddMall = ({ history }) => {
     dispatch(resetShops());
     setIsSubmitting(false);
     setShowInfo(true);
+    dispatch(resetShops());
     const show = setTimeout(() => {
       setShowInfo(false);
       history.push("/");
@@ -208,9 +209,7 @@ const AddMall = ({ history }) => {
                   <span>+</span>
                 </label>
                 {image && <MallPreview image={image} preview={imgPreview} />}
-                {imageError && (
-                  <FileTypeError error={imageError} />
-                )}
+                {imageError && <FileTypeError error={imageError} />}
                 {errors.mallPic && <Alert title="Image Required!" />}
               </div>
             </form>

@@ -12,7 +12,9 @@ import {
 import { deleteShopStorage } from "../../utils/Delete";
 import Alert from "../common/Alert";
 import Card from "../common/Card";
+import DeleteAlert from "../common/DeleteAlert";
 import Loader from "../common/Loader";
+import ShopAddForm from "../common/ShopAddForm";
 import Malls from "../HomePage/Malls";
 import SearchMall from "../Search/SearchMall";
 import "./Details.css";
@@ -26,6 +28,7 @@ const MallsDetails = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filterShops, setFilterShops] = useState([]);
   const [isLoding, setIsLoading] = useState(true);
+  const [deleteToast, setDeleteToast] = useState(false);
 
   const isAdmin = useSelector(SelectIsAdmin);
 
@@ -155,71 +158,31 @@ const MallsDetails = () => {
 
       await deleteShopStorage(mallForDelete, mallId, shopId);
       setIsLoading(false);
+      setDeleteToast(true);
+      setTimeout(() => {
+        setDeleteToast(false);
+      }, 1500);
     }
   };
+
+  const onClose = () => {
+    setAddShopStatus(false);
+  };
+
   return (
     <>
+      {deleteToast && <DeleteAlert />}
       {isLoding && <Loader />}
       {addShopStatus && (
         <div className="add-shop-modal">
           <div className="add-shop-wrapper">
-            <div className="form-wrapper">
-              <p className="close-btn" onClick={() => setAddShopStatus(false)}>
-                X
-              </p>
-              <form onSubmit={handleSubmit(handleAddShopSubmit)}>
-                <div className="form-floating">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="floatingInput"
-                    defaultValue=""
-                    placeholder="Name of the Shop"
-                    {...register("shopName", { required: true })}
-                  />
-                  {/* <label htmlFor="floatingInput">Mall Name</label> */}
-                  {errors.shopName && <Alert title="Please write about Shop" />}
-                </div>
-                <div className="form-floating">
-                  <textarea
-                    type="text"
-                    className="form-control"
-                    id="floatingPassword"
-                    defaultValue=""
-                    placeholder="Description"
-                    {...register("shopDesc", { required: true })}
-                  />
-                  {/* <label htmlFor="floatingPassword">Address</label> */}
-                  {errors.shopDesc && <Alert title="Please write about Shop" />}
-                </div>
-
-                <div className="form-floating mt-2">
-                  <label htmlFor="file-uploads" className="image-add-shop">
-                    <input
-                      id="file-uploads"
-                      type="file"
-                      multiple
-                      onChange={handleAddedShopImages}
-                    />
-                    <span>Upload IMAGEs + </span>
-                  </label>
-                  <span className="py-0 mt-2 text-info font-weight-light">
-                    First Image will be shown as Thumbnail
-                  </span>
-                  {shopImages &&
-                    shopImages.map((x) => (
-                      <p className="text-dark"> {x.name} </p>
-                    ))}
-                </div>
-                <button
-                  className="btn btn-lg btn-warning mt-2 "
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "SAVING..." : "SAVE SHOP"}
-                </button>
-              </form>
-            </div>
+            <ShopAddForm
+              onClose={onClose}
+              onSubmit={handleAddShopSubmit}
+              onChange={handleAddedShopImages}
+              shopImages={shopImages}
+              isSubmitting={isSubmitting}
+            />
           </div>
         </div>
       )}

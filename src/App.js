@@ -6,6 +6,7 @@ import AdminAllShops from "./components/Admin/AdminAllShops";
 import LoginAdmin from "./components/Admin/LoginAdmin";
 import Navbar from "./components/Admin/Navbar";
 import RegisterAdmin from "./components/Admin/RegisterAdmin";
+import DeleteAlert from "./components/common/DeleteAlert";
 import Dashboard from "./components/HomePage/Dashboard";
 import Malls from "./components/HomePage/Malls";
 import Shops from "./components/HomePage/Shops";
@@ -48,6 +49,7 @@ const App = () => {
   return (
     <>
       <Navbar />
+      {/* <DeleteAlert /> */}
       <Switch>
         <Route
           exact
