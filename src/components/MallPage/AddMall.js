@@ -18,6 +18,7 @@ import {
 } from "../../redux/MallSlice";
 import uuid from "react-uuid";
 import FileTypeError from "../common/FileTypeError";
+import AddedToast from "../common/AddedToast";
 const AddMall = ({ history }) => {
   const [shopAdd, setShopAdd] = useState(false);
   const [image, setImage] = useState(null);
@@ -25,6 +26,7 @@ const AddMall = ({ history }) => {
   const [imageError, setImageError] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState(false);
 
   const addedShopsDetails = useSelector(selectAddedShops);
 
@@ -146,10 +148,11 @@ const AddMall = ({ history }) => {
     dispatch(resetShops());
     setIsSubmitting(false);
     setShowInfo(true);
+    dispatch(resetShops());
     const show = setTimeout(() => {
       setShowInfo(false);
       history.push("/");
-    }, 1000);
+    }, 1500);
   };
 
   let submitBtnClassName = "w-100 btn btn-lg btn-outline-primary btn-save";
@@ -160,6 +163,7 @@ const AddMall = ({ history }) => {
 
   return (
     <>
+      {toast && <AddedToast />}
       <div className="container-fluid">
         {showInfo && (
           <AddedAlert title="New Mall has been added Sucessfully!!!" />
@@ -208,9 +212,7 @@ const AddMall = ({ history }) => {
                   <span>+</span>
                 </label>
                 {image && <MallPreview image={image} preview={imgPreview} />}
-                {imageError && (
-                  <FileTypeError error={imageError} />
-                )}
+                {imageError && <FileTypeError error={imageError} />}
                 {errors.mallPic && <Alert title="Image Required!" />}
               </div>
             </form>
@@ -218,6 +220,7 @@ const AddMall = ({ history }) => {
               <AddShop
                 setShopAdd={setShopAdd}
                 shopDetails={addedShopsDetails}
+                setToast={setToast}
               />
             )}
             <div className="add-shop">

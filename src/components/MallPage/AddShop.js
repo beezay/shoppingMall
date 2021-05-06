@@ -5,12 +5,15 @@ import { useDispatch } from "react-redux";
 import { addShops, addNewShops } from "../../redux/MallSlice";
 import Alert from "../common/Alert";
 import FileTypeError from "../common/FileTypeError";
+import ShopAddForm from "../common/ShopAddForm";
+import AddedToast from "../common/AddedToast";
 
-const AddShop = ({ setShopAdd, shopDetails, type }) => {
+const AddShop = ({ setShopAdd, shopDetails, type, setToast }) => {
   console.log(shopDetails);
 
-  const [images, setImages] = useState();
+  const [images, setImages] = useState([]);
   const [imageError, setImageError] = useState();
+  const [shopImages, setShopImages] = useState();
 
   const dispatch = useDispatch();
 
@@ -42,7 +45,7 @@ const AddShop = ({ setShopAdd, shopDetails, type }) => {
     });
     console.log(imageList);
     setImages(imageList);
-
+    setShopImages(Object.values(e.target.files));
     // const imageListt = Object.values(e.target.files);
     // console.log(imageList);
   };
@@ -67,65 +70,24 @@ const AddShop = ({ setShopAdd, shopDetails, type }) => {
     check(shopData);
     setShopAdd(false);
     reset({ defaultValue: "" });
+    setToast(true);
+    setTimeout(() => {
+      setToast(false);
+    }, 5000);
   };
 
   return (
-    <div className="add-shop-form">
-      <div className="top-details">
-        <div className="top-header">
-          <p>SHOPS</p>
-          <p className="close-btn" onClick={handleCloseShopAdd}>
-            X
-          </p>
-        </div>
-        <hr />
+    <>
+      <div className="add-shop-form">
+        <ShopAddForm
+          onClose={handleCloseShopAdd}
+          onSubmit={handleShopSubmit}
+          onChange={handleShopImageAdd}
+          imageError={imageError}
+          shopImages={shopImages}
+        />
       </div>
-      <form onSubmit={handleSubmit(handleShopSubmit)}>
-        <div className="form-floating">
-          <input
-            type="text"
-            className="form-control"
-            id="floatingInput"
-            defaultValue=""
-            placeholder="Name of the Shop"
-            {...register("shopName", { required: true })}
-          />
-          {/* <label htmlFor="floatingInput">Mall Name</label> */}
-          {errors.shopName && <Alert title="Shop Name is Required!!" />}
-        </div>
-        <div className="form-floating">
-          <textarea
-            type="text"
-            className="form-control"
-            id="floatingPassword"
-            defaultValue=""
-            placeholder="Description"
-            {...register("shopDesc", { required: true })}
-          />
-          {/* <label htmlFor="floatingPassword">Address</label> */}
-          {errors.shopDesc && <Alert title="Please write about Shop" />}
-        </div>
-
-        <div className="form-floating">
-          <label htmlFor="file-uploads" className="image-add-shop">
-            <input
-              id="file-uploads"
-              type="file"
-              multiple
-              onChange={handleShopImageAdd}
-            />
-            <span>Upload IMAGEs + </span>
-          </label>
-          <span className="py-0 mt-2 text-info font-weight-light">
-            First Image will be shown as Thumbnail
-          </span>
-          {imageError && <FileTypeError error={imageError} />}
-        </div>
-        <button className="btn btn-lg btn-warning mt-2 " type="submit">
-          SAVE SHOP
-        </button>
-      </form>
-    </div>
+    </>
   );
 };
 

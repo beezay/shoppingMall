@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { fireStore } from "../../firebase/firebase";
 import { deleteShopStorage } from "../../utils/Delete";
 import Card from "../common/Card";
+import DeleteAlert from "../common/DeleteAlert";
 import Loader from "../common/Loader";
 import ShopCard from "../common/ShopCard";
 import SearchMall from "../Search/SearchMall";
@@ -12,7 +13,7 @@ const AdminAllShops = () => {
   const [allShops, setAllShops] = useState([]);
   const [filteredShops, setFilteredShops] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [deleteToast, setDeleteToast] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -80,14 +81,19 @@ const AdminAllShops = () => {
     console.log(shopId, mallId);
     let confirm = window.confirm("Are you sure to Remove Shop?");
     if (confirm) {
-      setIsLoading(true)
+      setIsLoading(true);
       await deleteShopStorage(malls, mallId, shopId);
       setIsLoading(false);
+      setDeleteToast(true);
+      setTimeout(() => {
+        setDeleteToast(false);
+      }, 1500);
     }
   };
 
   return (
     <>
+      {deleteToast && <DeleteAlert />}
       {isLoading ? (
         <Loader />
       ) : (
