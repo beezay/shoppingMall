@@ -4,8 +4,9 @@ import { deleteMallStorage } from "../../utils/Delete";
 import Card from "../common/Card";
 import DeleteAlert from "../common/DeleteAlert";
 import Loader from "../common/Loader";
+import NoSearchedData from "../common/NoSearchedData";
 
-const Malls = ({ filterMalls, allMalls, setFilterMalls }) => {
+const Malls = ({ filterMalls, allMalls, setFilterMalls, searchError }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [deleteToast, setDeleteToast] = useState(false);
   const history = useHistory();
@@ -39,6 +40,7 @@ const Malls = ({ filterMalls, allMalls, setFilterMalls }) => {
         <div className="mall-heading">
           <h2>MALLS</h2>
         </div>
+        {searchError && <NoSearchedData />}
         <div className="image-wrapper">
           {filterMalls.map((mall) => (
             <Card

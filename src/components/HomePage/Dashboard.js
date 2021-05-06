@@ -16,6 +16,7 @@ const Dashboard = ({ history }) => {
 
   const [allMalls, setAllMalls] = useState([]);
   const [filteredMalls, setFilteredMalls] = useState([]);
+  const [searchError, setSearchError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
@@ -53,9 +54,12 @@ const Dashboard = ({ history }) => {
       // debugger
       console.log("SearchedMall", searchedMall);
       console.log("allMalls", allMalls);
+
+      searchedMall?.length <= 0 && setSearchError(true);
       setFilteredMalls(searchedMall);
     } else {
-      setFilteredMalls(allMalls.slice(0, 2));
+      setSearchError(false);
+      setFilteredMalls(allMalls.slice(0, 3));
     }
   };
 
@@ -96,6 +100,7 @@ const Dashboard = ({ history }) => {
                 allMalls={allMalls}
                 filterMalls={filteredMalls}
                 setFilterMalls={setFilteredMalls}
+                searchError={searchError}
               />
               <p className="show-more" onClick={handleAllMalls}>
                 {allMalls.length > 3 ? "View All" : ""}
