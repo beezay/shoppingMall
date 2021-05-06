@@ -6,8 +6,9 @@ import { addShops, addNewShops } from "../../redux/MallSlice";
 import Alert from "../common/Alert";
 import FileTypeError from "../common/FileTypeError";
 import ShopAddForm from "../common/ShopAddForm";
+import AddedToast from "../common/AddedToast";
 
-const AddShop = ({ setShopAdd, shopDetails, type }) => {
+const AddShop = ({ setShopAdd, shopDetails, type, setToast }) => {
   console.log(shopDetails);
 
   const [images, setImages] = useState([]);
@@ -69,18 +70,24 @@ const AddShop = ({ setShopAdd, shopDetails, type }) => {
     check(shopData);
     setShopAdd(false);
     reset({ defaultValue: "" });
+    setToast(true);
+    setTimeout(() => {
+      setToast(false);
+    }, 5000);
   };
 
   return (
-    <div className="add-shop-form">
-      <ShopAddForm
-        onClose={handleCloseShopAdd}
-        onSubmit={handleShopSubmit}
-        onChange={handleShopImageAdd}
-        imageError={imageError}
-        shopImages={shopImages}
-      />
-    </div>
+    <>
+      <div className="add-shop-form">
+        <ShopAddForm
+          onClose={handleCloseShopAdd}
+          onSubmit={handleShopSubmit}
+          onChange={handleShopImageAdd}
+          imageError={imageError}
+          shopImages={shopImages}
+        />
+      </div>
+    </>
   );
 };
 

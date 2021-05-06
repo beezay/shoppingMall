@@ -29,6 +29,7 @@ const MallsDetails = () => {
   const [filterShops, setFilterShops] = useState([]);
   const [isLoding, setIsLoading] = useState(true);
   const [deleteToast, setDeleteToast] = useState(false);
+  const [toast, setToast] = useState(true);
 
   const isAdmin = useSelector(SelectIsAdmin);
 
