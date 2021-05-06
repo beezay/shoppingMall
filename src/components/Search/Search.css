@@ -1,0 +1,36 @@
+.search {
+  /* border: 2px solid black; */
+}
+
+.search input {
+  border: 2px solid grey !important;
+  border-radius: 8px;
+  width: 15rem !important;
+  height: 3.1rem!important;
+  text-align: center;
+  font-weight: bolder;
+  letter-spacing: 2px;
+  font-size: 18px;
+  color: darkturquoise;
+  transition: all 0.2s ease-out !important;
+}
+
+.search input::placeholder {
+  letter-spacing: 0.4rem;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ced6e0;
+  transition: all 0.2s ease-in
+}
+
+.search input:focus,
+.search input:hover {
+  width: 22rem !important;
+  height: 3rem;
+  outline: none;
+}
+
+.search input:focus::placeholder,
+.search input:hover::placeholder {
+  letter-spacing: 0.6rem;
+}

@@ -1,0 +1,75 @@
+.btn-add-mall {
+    padding: 3px 8px;
+    background-color: #fff;
+    color: #2c2c54;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+    border-style: none;
+    outline: none;
+    transition: all 0.5s ease-out;
+}
+
+.btn-add-mall:hover {
+    background-color: #2c2c54;
+    color: #fff;
+}
+
+/* LOADER CSS  */
+.loader-wrapper {
+    min-height: 100vh;
+    max-height: 100vh;
+    max-width: 100vw;
+    min-width: 100vw;
+    position: relative;
+
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-80%, -90%);
+
+}
+
+.spinner-box {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+
+.circle-border {
+    width: 150px;
+    height: 150px;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    /* background: rgb(63, 249, 220); */
+    background: #63686e;
+    background: linear-gradient(0deg, #fff 33%, #63686e 100%);
+    animation: spin .8s linear 0s infinite;
+}
+
+.circle-core {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}
