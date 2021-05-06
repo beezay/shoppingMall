@@ -17,7 +17,6 @@ import { SelectIsAdmin, setAdmin } from "./redux/MallSlice";
 import { loginStatus } from "./utils/CheckLogin";
 
 const App = () => {
-  // const [showSearchbar, setShowSearchbar] = useState(false)
   const dispatch = useDispatch();
   dispatch(setAdmin(loginStatus));
   const isAdmin = useSelector(SelectIsAdmin);

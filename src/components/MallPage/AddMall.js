@@ -51,7 +51,6 @@ const AddMall = ({ history }) => {
   };
 
   const shopUpload = async (newId) => {
-    console.log(addedShopsDetails);
     await Promise.all(
       addedShopsDetails.map((shop) =>
         Promise.all(
@@ -71,13 +70,10 @@ const AddMall = ({ history }) => {
         )
       )
     );
-    console.log(shopImageUrl);
     return shopImageUrl;
   };
 
   const shopDetails = (imgArr) => {
-    console.log("ShopDetails", imgArr);
-
     const shopArr = addedShopsDetails.map((shop, idx) => ({
       ...shop,
       shopImages: imgArr[idx].map((img, i) => ({
@@ -85,7 +81,6 @@ const AddMall = ({ history }) => {
         shopImgUrl: img,
       })),
     }));
-    console.log(shopArr);
     return shopArr;
   };
 
@@ -99,7 +94,6 @@ const AddMall = ({ history }) => {
     setIsSubmitting(true);
     let shopImgArr;
     if (addedShopsDetails.length > 0) {
-      console.log("Loop Entered");
       shopImgArr = await shopUpload(newId);
     }
 
@@ -123,8 +117,6 @@ const AddMall = ({ history }) => {
       },
       shops: shopArr,
     };
-
-    console.log(mallData);
 
     fireStore.collection("mallInfo").doc(newId).set(mallData);
 

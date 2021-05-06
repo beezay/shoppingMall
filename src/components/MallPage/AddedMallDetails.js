@@ -5,18 +5,14 @@ import { removeShop } from "../../redux/MallSlice";
 
 const AddedMallDetails = (props) => {
   const [showPopup, setShowPopup] = useState(null);
-  console.log("edit=>", props.edit);
   const dispatch = useDispatch();
   const { addedShopsDetails } = props;
-  // console.log('Added Shops', addedShopsDetails);
 
   const handleImagePopup = (id) => {
-    console.log(id);
     setShowPopup(id);
   };
 
   const handleShopDelete = (shopId) => {
-    console.log(shopId);
     dispatch(removeShop(shopId));
   };
 
