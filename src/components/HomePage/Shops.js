@@ -37,23 +37,26 @@ const Shops = ({ shops, malls }) => {
           <h2>SHOPS</h2>
         </div>
         <div className="image-wrapper">
-          {shops?.map((shop) => (
-            <Card
-              className="image-container"
-              shop={shop}
-              name={
-                shop?.shops[0]?.shopName
-                  ? shop?.shops[0]?.shopName
-                  : "NO SHOPS FOR"
-              }
-              imgUrl={shop?.shops[0]?.shopImages[0]?.shopImgUrl}
-              address={shop?.mallName}
-              key={shop?.mallId}
-              id={shop?.shops[0]?.id}
-              onShopDelete={handleShopDelete}
-              func={handleSingleShopClick}
-            />
-          ))}
+          {shops?.map(
+            (shop) =>
+              shop?.shops.length > 0 && (
+                <Card
+                  className="image-container"
+                  shop={shop}
+                  name={
+                    shop?.shops[0]?.shopName
+                      ? shop?.shops[0]?.shopName
+                      : "NO SHOPS FOR"
+                  }
+                  imgUrl={shop?.shops[0]?.shopImages[0]?.shopImgUrl}
+                  address={shop?.mallName}
+                  key={shop?.mallId}
+                  id={shop?.shops[0]?.id}
+                  onShopDelete={handleShopDelete}
+                  func={handleSingleShopClick}
+                />
+              )
+          )}
         </div>
       </div>
     </>
