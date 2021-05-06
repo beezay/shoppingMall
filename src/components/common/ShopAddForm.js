@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import Alert from "./Alert";
+import FileTypeError from "./FileTypeError";
 
 const ShopAddForm = (props) => {
   const {
@@ -12,9 +13,15 @@ const ShopAddForm = (props) => {
 
   return (
     <div className="form-wrapper">
-      <p className="close-btn" onClick={props.onClose}>
-        X
-      </p>
+      <div className="top-details">
+        <div className="top-header">
+          <p>SHOPS</p>
+          <p className="close-btn" onClick={props.onClose}>
+            X
+          </p>
+        </div>
+        <hr className="w-75 mr-auto" />
+      </div>
       <form onSubmit={handleSubmit(props.onSubmit)}>
         <div className="form-floating">
           <input
@@ -54,6 +61,7 @@ const ShopAddForm = (props) => {
           <span className="py-0 mt-2 text-info font-weight-light">
             First Image will be shown as Thumbnail
           </span>
+          {props.imageError && <FileTypeError error={props.imageError} /> }
           {props.shopImages &&
             props.shopImages.map((x) => (
               <p className="text-dark"> {x.name} </p>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeleteAlert = () => {
+const AddedToast = () => {
   return (
     <div
       className="toast show"
@@ -12,11 +12,11 @@ const DeleteAlert = () => {
         zIndex: 100,
       }}
     >
-      <div className="toast-body bg-danger text-white rounded text-center">
-        File Deleted Successfully !!!
+      <div className="toast-body bg-success text-white rounded text-center">
+        File Added Successfully !!!
       </div>
     </div>
   );
 };
 
-export default DeleteAlert;
+export default AddedToast;
