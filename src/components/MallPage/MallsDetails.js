@@ -26,6 +26,7 @@ const MallsDetails = () => {
   const [deleteToast, setDeleteToast] = useState(false);
   const [toast, setToast] = useState(false);
   const [searchError, setSearchError] = useState(false);
+  const [imageError, setImageError] = useState(null);
 
   const isAdmin = useSelector(SelectIsAdmin);
 
@@ -94,6 +95,11 @@ const MallsDetails = () => {
   };
 
   const handleAddShopSubmit = async (data) => {
+    if (shopImages.length <= 0) {
+      console.log("done");
+      setImageError("Please select at least one Image");
+      return;
+    }
     setIsSubmitting(true);
     const shop_id = Date.now().toString();
     console.log(data);
@@ -181,6 +187,7 @@ const MallsDetails = () => {
               onChange={handleAddedShopImages}
               shopImages={shopImages}
               isSubmitting={isSubmitting}
+              imageError={imageError}
             />
           </div>
         </div>

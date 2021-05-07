@@ -1,19 +1,16 @@
-import uuid from "react-uuid";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { addShops, addNewShops } from "../../redux/MallSlice";
-import Alert from "../common/Alert";
-import FileTypeError from "../common/FileTypeError";
+
 import ShopAddForm from "../common/ShopAddForm";
-import AddedToast from "../common/AddedToast";
 
 const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
   console.log(shopDetails);
 
   const [images, setImages] = useState([]);
   const [imageError, setImageError] = useState();
-  const [shopImages, setShopImages] = useState();
+  const [shopImages, setShopImages] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -21,12 +18,7 @@ const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
     setShopAdd(false);
   };
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm();
+  const { reset } = useForm();
 
   const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
 
@@ -55,7 +47,10 @@ const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
   };
 
   const handleShopSubmit = (data) => {
-    console.log(images);
+    if (shopImages.length <= 0) {
+      setImageError("Please select at least one Image");
+      return;
+    }
 
     const id = Date.now().toString();
     console.log("Shop Added", images);

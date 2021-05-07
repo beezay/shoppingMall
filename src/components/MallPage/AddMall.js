@@ -33,13 +33,7 @@ const AddMall = ({ history }) => {
 
   const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
   const dispatch = useDispatch();
-  const {
-    register,
-
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm();
+  const { reset } = useForm();
 
   const handleAddShop = (val) => {
     if (shopAdd) {
