@@ -26,6 +26,8 @@ const MallsDetails = () => {
   const [deleteToast, setDeleteToast] = useState(false);
   const [toast, setToast] = useState(false);
   const [searchError, setSearchError] = useState(false);
+  const [imageError, setImageError] = useState(null);
+  const [images, setImages] = useState([]);
 
   const isAdmin = useSelector(SelectIsAdmin);
 
@@ -67,10 +69,27 @@ const MallsDetails = () => {
     history.push(`/editMall/${id}`);
   };
 
+  const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
+
   const handleAddedShopImages = (e) => {
-    const shopImageList = Object.values(e.target.files);
-    console.log(shopImageList);
-    setShopImages(shopImageList);
+    setShopImages([]);
+    const imageList = Object.values(e.target.files).map((file) => {
+      let imgList = [];
+      if (imageTypes.includes(file.type)) {
+        imgList.push(file);
+        setImageError("");
+      } else {
+        setImageError("Please select only PNG/JPG");
+        return;
+      }
+      const shopImageList = Object.values(e.target.files);
+      console.log(shopImageList);
+      setShopImages(shopImageList);
+      return imgList;
+    });
+    console.log("Check Return");
+    console.log(shopImages);
+    setImages(imageList);
   };
 
   const shopImageUploads = async (shop_id) => {
@@ -94,6 +113,11 @@ const MallsDetails = () => {
   };
 
   const handleAddShopSubmit = async (data) => {
+    if (shopImages.length <= 0) {
+      console.log("done");
+      setImageError("Please select at least one Image");
+      return;
+    }
     setIsSubmitting(true);
     const shop_id = Date.now().toString();
     console.log(data);
@@ -165,6 +189,8 @@ const MallsDetails = () => {
 
   const onClose = () => {
     setAddShopStatus(false);
+    setImageError("");
+    setShopImages([]);
   };
 
   return (
@@ -181,6 +207,7 @@ const MallsDetails = () => {
               onChange={handleAddedShopImages}
               shopImages={shopImages}
               isSubmitting={isSubmitting}
+              imageError={imageError}
             />
           </div>
         </div>

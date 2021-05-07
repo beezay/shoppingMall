@@ -12,7 +12,9 @@ import {
   selectNewAddedShops,
 } from "../../redux/MallSlice";
 
+
 import AddedToast from "../common/AddedToast";
+
 
 import MallForm from "../common/MallForm";
 
@@ -184,6 +186,7 @@ const EditMall = (props) => {
             mallImage={image}
             mallImgPreview={imgPreview}
             newMallImage={newMallImage}
+            setToast={setToast}
             edit={true}
             setToast={setToast}
           />

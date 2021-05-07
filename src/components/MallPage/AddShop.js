@@ -8,7 +8,7 @@ import ShopAddForm from "../common/ShopAddForm";
 const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
   const [images, setImages] = useState([]);
   const [imageError, setImageError] = useState();
-  const [shopImages, setShopImages] = useState();
+  const [shopImages, setShopImages] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -40,6 +40,13 @@ const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
   };
 
   const handleShopSubmit = (data) => {
+
+    if (shopImages.length <= 0) {
+      setImageError("Please select at least one Image");
+      return;
+    }
+
+
     const id = Date.now().toString();
     const shopData = {
       id: id.toString(),
