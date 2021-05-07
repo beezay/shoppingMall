@@ -16,6 +16,17 @@
     color: #fff;
 }
 
+/* OVERLAY CSS  */
+.card-overlay {
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+
+}
+
 /* LOADER CSS  */
 .loader-wrapper {
     min-height: 100vh;
