@@ -12,7 +12,6 @@ const mallSlice = createSlice({
   },
   reducers: {
     addShops: (state, action) => {
-      console.log("Shop Added", action.payload);
       return {
         ...state,
         addedShops: [...state.addedShops, action.payload],
@@ -20,7 +19,6 @@ const mallSlice = createSlice({
     },
 
     addNewShops: (state, action) => {
-      console.log("New Shops Add", action.payload);
       return {
         ...state,
         newAddedShops: [...state.newAddedShops, action.payload],
@@ -28,7 +26,6 @@ const mallSlice = createSlice({
     },
 
     removeSingleShopImage: (state, action) => {
-      console.log("Shop Image Remove", action.payload);
       return {
         ...state,
         newAddedShops: state.newAddedShops.map((shop) =>
@@ -36,7 +33,7 @@ const mallSlice = createSlice({
             ? {
                 ...shop,
                 shopImages: shop.shopImages.filter(
-                  (img) => img.shopImgId !== action.payload.imgId
+                  (img) => img.id !== action.payload.imgId
                 ),
               }
             : shop
@@ -46,7 +43,7 @@ const mallSlice = createSlice({
             ? {
                 ...shop,
                 shopImages: shop.shopImages.filter(
-                  (img) => img.shopImgId !== action.payload.imgId
+                  (img) => img.id !== action.payload.imgId
                 ),
               }
             : shop
@@ -55,7 +52,6 @@ const mallSlice = createSlice({
     },
 
     removeShop: (state, action) => {
-      console.log(action.payload);
       return {
         ...state,
         newAddedShops: state.newAddedShops.filter(
@@ -76,15 +72,13 @@ const mallSlice = createSlice({
     },
 
     setAdmin: (state, action) => {
-      console.log('Admin CHeck',action.payload);
       return {
         ...state,
-        isAdmin: action.payload === "true" ? true : false
+        isAdmin: action.payload === "true" ? true : false,
       };
     },
 
     fetchMalls: (state, action) => {
-      console.log("Malls Fetched", action.payload);
       return {
         ...state,
         malls: [...state.malls, action.payload],

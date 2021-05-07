@@ -1,6 +1,6 @@
 import React from "react";
 import "./Search.css";
-const SearchMall = ({onchange, title}) => {
+const SearchMall = ({ onchange, title }) => {
   return (
     <div className="search mb-2">
       <form className="form-inline my-2 my-lg-0">
@@ -11,9 +11,6 @@ const SearchMall = ({onchange, title}) => {
           onChange={onchange}
           defaultValue=""
         />
-        {/* <button className="btn btn-secondary my-2 my-sm-0" type="submit">
-              Search
-            </button> */}
       </form>
     </div>
   );

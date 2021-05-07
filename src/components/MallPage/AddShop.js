@@ -6,8 +6,6 @@ import { addShops, addNewShops } from "../../redux/MallSlice";
 import ShopAddForm from "../common/ShopAddForm";
 
 const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
-  console.log(shopDetails);
-
   const [images, setImages] = useState([]);
   const [imageError, setImageError] = useState();
   const [shopImages, setShopImages] = useState([]);
@@ -23,11 +21,9 @@ const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
   const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
 
   const handleShopImageAdd = (e) => {
-    // console.log(e.target.files);
     const imageList = Object.values(e.target.files).map((file) => {
       let imgList = [];
       if (imageTypes.includes(file.type)) {
-        console.log(file);
         imgList.push(file);
         setImageError("");
       } else {
@@ -35,11 +31,8 @@ const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
       }
       return imgList;
     });
-    console.log(imageList);
     setImages(imageList);
     setShopImages(Object.values(e.target.files));
-    // const imageListt = Object.values(e.target.files);
-    // console.log(imageList);
   };
 
   const check = (data) => {
@@ -47,13 +40,14 @@ const AddShop = ({ setShopAdd, shopDetails, edit, setToast }) => {
   };
 
   const handleShopSubmit = (data) => {
+
     if (shopImages.length <= 0) {
       setImageError("Please select at least one Image");
       return;
     }
 
+
     const id = Date.now().toString();
-    console.log("Shop Added", images);
     const shopData = {
       id: id.toString(),
       ...data,

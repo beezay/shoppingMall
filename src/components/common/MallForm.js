@@ -15,7 +15,6 @@ const MallForm = (props) => {
   const {
     handleSubmit,
     formState: { errors },
-    reset,
     register,
   } = useForm();
 

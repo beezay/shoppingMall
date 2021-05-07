@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { removeSingleShopImage, selectAddedShops } from "../../redux/MallSlice";
+import { useDispatch } from "react-redux";
+import { removeSingleShopImage } from "../../redux/MallSlice";
 
 const ImagePopup = ({ shopImages, setShowPopup, shopId, edit }) => {
   const [hoverStatus, setHoverStatus] = useState(false);
 
-  console.log(shopImages);
+  console.log("props=>", shopImages);
 
   const dispatch = useDispatch();
 
   const handleShopImageDelete = (imgId) => {
+    console.log(shopImages);
     console.log(shopId, imgId);
     // const data = addedShops.map(shop => {
     //   if(shop.id === shopId) {}
@@ -46,7 +47,7 @@ const ImagePopup = ({ shopImages, setShowPopup, shopId, edit }) => {
             />
             <span
               className="remove-shop-image"
-              onClick={() => handleShopImageDelete(imgItem.shopImgId)}
+              onClick={() => handleShopImageDelete(imgItem.id)}
             >
               X
             </span>

@@ -1,23 +1,14 @@
 import React, { useState } from "react";
-import AddShop from "./AddShop";
 
 import { fireStore, storage } from "../../firebase/firebase";
 
 import "./AddForm.css";
 import { withRouter } from "react-router";
 import { useForm } from "react-hook-form";
-import Alert from "../common/Alert";
 import AddedAlert from "../common/AddedAlert";
 import { useDispatch, useSelector } from "react-redux";
-import AddedMallDetails from "./AddedMallDetails";
-import MallPreview from "./MallPreview";
-import {
-  selectAddedShops,
-  removeShop,
-  resetShops,
-} from "../../redux/MallSlice";
-import uuid from "react-uuid";
-import FileTypeError from "../common/FileTypeError";
+import { selectAddedShops, resetShops } from "../../redux/MallSlice";
+
 import AddedToast from "../common/AddedToast";
 import MallForm from "../common/MallForm";
 const AddMall = ({ history }) => {
@@ -60,7 +51,6 @@ const AddMall = ({ history }) => {
   };
 
   const shopUpload = async (newId) => {
-    console.log(addedShopsDetails);
     await Promise.all(
       addedShopsDetails.map((shop) =>
         Promise.all(
@@ -80,13 +70,10 @@ const AddMall = ({ history }) => {
         )
       )
     );
-    console.log(shopImageUrl);
     return shopImageUrl;
   };
 
   const shopDetails = (imgArr) => {
-    console.log("ShopDetails", imgArr);
-
     const shopArr = addedShopsDetails.map((shop, idx) => ({
       ...shop,
       shopImages: imgArr[idx].map((img, i) => ({
@@ -94,7 +81,6 @@ const AddMall = ({ history }) => {
         shopImgUrl: img,
       })),
     }));
-    console.log(shopArr);
     return shopArr;
   };
 
@@ -108,7 +94,6 @@ const AddMall = ({ history }) => {
     setIsSubmitting(true);
     let shopImgArr;
     if (addedShopsDetails.length > 0) {
-      console.log("Loop Entered");
       shopImgArr = await shopUpload(newId);
     }
 
@@ -132,8 +117,6 @@ const AddMall = ({ history }) => {
       },
       shops: shopArr,
     };
-
-    console.log(mallData);
 
     fireStore.collection("mallInfo").doc(newId).set(mallData);
 

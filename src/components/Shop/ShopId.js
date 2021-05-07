@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useParams, withRouter } from "react-router";
-import uuid from "react-uuid";
+import { withRouter } from "react-router";
+
 import { fireStore, storage } from "../../firebase/firebase";
 import { SelectIsAdmin } from "../../redux/MallSlice";
 import Alert from "../common/Alert";
@@ -14,9 +14,6 @@ const ShopId = (props) => {
   const mallId = props.match.params.mallid;
   const shopId = props.match.params.shopid;
 
-  // const {mallid, shopid} = useParams()
-
-  // console.log(mallid, shopid);
   const [allMalls, setAllMalls] = useState([]);
   const [mall, setMall] = useState([]);
   const [dbShops, setDbShops] = useState();
@@ -53,12 +50,12 @@ const ShopId = (props) => {
         })
       );
       const singleMall = malls.filter((x) => x.id === mallId);
-      console.log(singleMall[0].shops, malls);
+
       setAllMalls(malls);
       const shops = singleMall[0].shops.filter((x) => x.id !== shopId);
       setDbShops(shops);
       const shop = singleMall[0].shops.filter((shop) => shop.id === shopId);
-      console.log("Shop", shop, shops);
+
       setShop(shop);
       setMall(singleMall);
     };
@@ -68,23 +65,22 @@ const ShopId = (props) => {
 
   //! Delete SHop Images
   const handleCrossClick = async (imgId) => {
-    console.log(imgId);
     let confirm = window.confirm("Are you Sure you want to Delete this Image?");
     if (confirm) {
       setIsLoading(true);
       const oldShopImages = shop[0].shopImages;
-      console.log(oldShopImages);
+
       const filterAfterDeleteImages = oldShopImages.filter(
         (img) => img.shopImgId !== imgId
       );
-      console.log("Current Shop", shop);
+
       let shopData = shop[0];
-      console.log(shopData);
+
       let newShop = {
         ...shopData,
         shopImages: [...filterAfterDeleteImages],
       };
-      console.log("New Shop", newShop);
+
       try {
         await fireStore
           .collection("mallInfo")
@@ -104,11 +100,9 @@ const ShopId = (props) => {
   };
 
   const handleAddedShopImages = (e) => {
-    // const shopImagesList = Object.values(e.target.files);
     const imageList = Object.values(e.target.files).map((file) => {
       let imgList = [];
       if (imageTypes.includes(file.type)) {
-        console.log(file);
         imgList.push(file);
         setImageError("");
       } else {
@@ -117,12 +111,9 @@ const ShopId = (props) => {
       return imgList;
     });
     setShopImages(imageList);
-    // console.log(shopImages, "shopImageList");
   };
 
   const shopImageUploads = async (uniqueId) => {
-    console.log("ShopImages", shopImages);
-
     await Promise.all(
       shopImages.map((shopImg) =>
         storage.ref(`shopImages/${uniqueId}${shopImg[0].name}`).put(shopImg[0])
@@ -137,7 +128,6 @@ const ShopId = (props) => {
           .getDownloadURL()
       )
     );
-    console.log(shopImageUrl);
     return shopImageUrl;
   };
 
@@ -153,7 +143,6 @@ const ShopId = (props) => {
       shopImgId: `${uniqueId}${shopImages[idx][0].name}`,
       shopImgUrl: imgUrl,
     }));
-    // console.log(shopImagesData, "Arr");
     const shopData = {
       ...data,
       id: shopId,
@@ -163,7 +152,6 @@ const ShopId = (props) => {
       .collection("mallInfo")
       .doc(mallId)
       .update({ shops: [...dbShops, shopData] });
-    console.log(shopData, "Data");
     reset();
     setShopImages([]);
     setEditShop(false);
@@ -171,7 +159,6 @@ const ShopId = (props) => {
 
     setShop([shopData]);
   };
-  console.log("After Edit => ", shop);
 
   return (
     <>
