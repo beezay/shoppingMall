@@ -153,6 +153,7 @@ const AddMall = ({ history }) => {
           mallImage={image}
           mallImgPreview={imgPreview}
           setToast={setToast}
+          edit={false}
         />
       </div>
     </>

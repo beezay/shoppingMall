@@ -100,7 +100,13 @@ const MallForm = (props) => {
           onClick={handleSubmit(props?.onSubmit)}
           disabled={props?.isSubmitting}
         >
-          {props.isSubmitting ? "Updating..." : "UPDATE MALL"}
+          {props.edit
+            ? props.isSubmitting
+              ? "Updating..."
+              : "UPDATE MALL"
+            : props.isSubmitting
+            ? "Saving..."
+            : "Save MALL"}
         </button>
         <button
           className="w-100 btn btn-lg btn-outline-warning btn-cancel"
