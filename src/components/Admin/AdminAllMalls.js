@@ -6,6 +6,7 @@ import { SelectIsAdmin } from "../../redux/MallSlice";
 import { deleteMallStorage } from "../../utils/Delete";
 import AddButton from "../common/AddButton";
 import Card from "../common/Card";
+import DeleteAlert from "../common/DeleteAlert";
 import Loader from "../common/Loader";
 import SearchMall from "../Search/SearchMall";
 
@@ -13,6 +14,7 @@ const AdminAllMalls = () => {
   const [allMalls, setAllMalls] = useState();
   const [filteredMalls, setFilteredMalls] = useState();
   const [loading, setLoading] = useState(true);
+  const [deleteToast, setDeleteToast] = useState(false);
 
   const history = useHistory();
 
@@ -68,11 +70,16 @@ const AdminAllMalls = () => {
       let newMall = allMalls.filter((x) => x.id !== mallId);
       setFilteredMalls(newMall);
       setLoading(false);
+      setDeleteToast(true);
+      setTimeout(() => {
+        setDeleteToast(false);
+      }, 1500);
     }
   };
 
   return (
     <>
+      {deleteToast && <DeleteAlert />}
       {loading ? (
         <Loader />
       ) : (

@@ -1,26 +1,18 @@
 import React, { useState } from "react";
-import { FormProvider } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import ImagePopup from "./ImagePopup";
 import { removeShop } from "../../redux/MallSlice";
 
 const AddedMallDetails = (props) => {
   const [showPopup, setShowPopup] = useState(null);
-
   const dispatch = useDispatch();
   const { addedShopsDetails } = props;
-  // console.log('Added Shops', addedShopsDetails);
 
   const handleImagePopup = (id) => {
-    console.log(id);
     setShowPopup(id);
-    // setTimeout(() => {
-    //   setShowPopup(false);
-    // }, 3000);
   };
 
   const handleShopDelete = (shopId) => {
-    console.log(shopId);
     dispatch(removeShop(shopId));
   };
 
@@ -62,7 +54,7 @@ const AddedMallDetails = (props) => {
                     shopImages={shop.shopImages}
                     setShowPopup={setShowPopup}
                     shopId={shop.id}
-                    edit="true"
+                    edit={props.edit}
                   />
                 )}
               </tr>
@@ -93,7 +85,7 @@ const AddedMallDetails = (props) => {
                       shopImages={shop.shopImages}
                       setShowPopup={setShowPopup}
                       shopId={shop.id}
-                      edit="true"
+                      edit={!props.edit}
                     />
                   )}
                 </tr>

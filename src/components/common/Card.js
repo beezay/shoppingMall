@@ -13,6 +13,7 @@ const Card = (props) => {
       onMouseOver={() => setShowCross(true)}
       onMouseLeave={() => setShowCross(false)}
     >
+      {!showCross && <div className="card-overlay"></div>}
       <div
         className="detail-container"
         onClick={() => props.func(props?.id, props?.shop?.mallId)}

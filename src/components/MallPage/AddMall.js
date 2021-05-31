@@ -1,23 +1,16 @@
 import React, { useState } from "react";
-import AddShop from "./AddShop";
 
 import { fireStore, storage } from "../../firebase/firebase";
 
 import "./AddForm.css";
 import { withRouter } from "react-router";
 import { useForm } from "react-hook-form";
-import Alert from "../common/Alert";
 import AddedAlert from "../common/AddedAlert";
 import { useDispatch, useSelector } from "react-redux";
-import AddedMallDetails from "./AddedMallDetails";
-import MallPreview from "./MallPreview";
-import {
-  selectAddedShops,
-  removeShop,
-  resetShops,
-} from "../../redux/MallSlice";
-import uuid from "react-uuid";
-import FileTypeError from "../common/FileTypeError";
+import { selectAddedShops, resetShops } from "../../redux/MallSlice";
+
+import AddedToast from "../common/AddedToast";
+import MallForm from "../common/MallForm";
 const AddMall = ({ history }) => {
   const [shopAdd, setShopAdd] = useState(false);
   const [image, setImage] = useState(null);
@@ -25,18 +18,13 @@ const AddMall = ({ history }) => {
   const [imageError, setImageError] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState(false);
 
   const addedShopsDetails = useSelector(selectAddedShops);
 
   const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
   const dispatch = useDispatch();
-  const {
-    register,
-
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm();
+  const { reset } = useForm();
 
   const handleAddShop = (val) => {
     if (shopAdd) {
@@ -63,7 +51,6 @@ const AddMall = ({ history }) => {
   };
 
   const shopUpload = async (newId) => {
-    console.log(addedShopsDetails);
     await Promise.all(
       addedShopsDetails.map((shop) =>
         Promise.all(
@@ -83,13 +70,10 @@ const AddMall = ({ history }) => {
         )
       )
     );
-    console.log(shopImageUrl);
     return shopImageUrl;
   };
 
   const shopDetails = (imgArr) => {
-    console.log("ShopDetails", imgArr);
-
     const shopArr = addedShopsDetails.map((shop, idx) => ({
       ...shop,
       shopImages: imgArr[idx].map((img, i) => ({
@@ -97,7 +81,6 @@ const AddMall = ({ history }) => {
         shopImgUrl: img,
       })),
     }));
-    console.log(shopArr);
     return shopArr;
   };
 
@@ -111,7 +94,6 @@ const AddMall = ({ history }) => {
     setIsSubmitting(true);
     let shopImgArr;
     if (addedShopsDetails.length > 0) {
-      console.log("Loop Entered");
       shopImgArr = await shopUpload(newId);
     }
 
@@ -136,8 +118,6 @@ const AddMall = ({ history }) => {
       shops: shopArr,
     };
 
-    console.log(mallData);
-
     fireStore.collection("mallInfo").doc(newId).set(mallData);
 
     setImage(null);
@@ -146,115 +126,35 @@ const AddMall = ({ history }) => {
     dispatch(resetShops());
     setIsSubmitting(false);
     setShowInfo(true);
+    dispatch(resetShops());
     const show = setTimeout(() => {
       setShowInfo(false);
       history.push("/");
-    }, 1000);
+    }, 1500);
   };
-
-  let submitBtnClassName = "w-100 btn btn-lg btn-outline-primary btn-save";
-
-  if (isSubmitting) {
-    submitBtnClassName += " disabled";
-  }
 
   return (
     <>
+      {toast && <AddedToast />}
       <div className="container-fluid">
         {showInfo && (
           <AddedAlert title="New Mall has been added Sucessfully!!!" />
         )}
-        <div className="row">
-          <div className="add-mall-form col-4">
-            <form onSubmit={handleSubmit(handleMallSubmit)}>
-              <h1 className="h3 mb-3 fw-normal">
-                Enter Your Mall Details Here!!!
-              </h1>
-              <div className="form-floating">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="mall-name"
-                  placeholder="Name of the Mall"
-                  defaultValue=""
-                  {...register("mallName", { required: true })}
-                />
-                {/* <label htmlFor="floatingInput">Mall Name</label> */}
-                {errors.mallName && <Alert title="Mall Name is Required!" />}
-              </div>
-              <div className="form-floating">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="mall-address"
-                  placeholder="Address"
-                  defaultValue=""
-                  {...register("mallAddress", { required: true })}
-                />
-                {/* <label htmlFor="floatingPassword">Address</label> */}
-                {errors.mallAddress && <Alert title="Address Required!" />}
-              </div>
-
-              <div className="form-floating">
-                <label htmlFor="file-upload" className="image-add">
-                  <input
-                    id="file-upload"
-                    type="file"
-                    onChange={fileUploadChange}
-                    // {
-                    //   ...register("mallPic", {required:true})
-                    // }
-                  />
-                  <span>+</span>
-                </label>
-                {image && <MallPreview image={image} preview={imgPreview} />}
-                {imageError && (
-                  <FileTypeError error={imageError} />
-                )}
-                {errors.mallPic && <Alert title="Image Required!" />}
-              </div>
-            </form>
-            {shopAdd && (
-              <AddShop
-                setShopAdd={setShopAdd}
-                shopDetails={addedShopsDetails}
-              />
-            )}
-            <div className="add-shop">
-              {shopAdd ? (
-                <p className="add-shop-p" onClick={() => handleAddShop(false)}>
-                  Cancel{" "}
-                </p>
-              ) : (
-                <p className="add-shop-p" onClick={() => handleAddShop(true)}>
-                  Add Shop <span>+</span>{" "}
-                </p>
-              )}
-            </div>
-            <button
-              id="dynamic-btn"
-              className={submitBtnClassName}
-              type="submit"
-              onClick={handleSubmit(handleMallSubmit)}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Saving..." : "SAVE MALL"}
-            </button>
-            <button
-              className="w-100 btn btn-lg btn-outline-warning btn-cancel"
-              type="button"
-              onClick={handleCancelAddMall}
-              disabled={isSubmitting}
-            >
-              CANCEL
-            </button>
-          </div>
-          {addedShopsDetails.length > 0 && (
-            <div className="col-6">
-              <AddedMallDetails addedShopsDetails={addedShopsDetails} />
-            </div>
-          )}
-        </div>
+        <MallForm
+          onSubmit={handleMallSubmit}
+          onChange={fileUploadChange}
+          imageError={imageError}
+          addedShopsDetails={addedShopsDetails}
+          isSubmitting={isSubmitting}
+          onCancel={handleCancelAddMall}
+          handleAddShop={handleAddShop}
+          shopAdd={shopAdd}
+          setShopAdd={setShopAdd}
+          mallImage={image}
+          mallImgPreview={imgPreview}
+          setToast={setToast}
+          edit={false}
+        />
       </div>
     </>
   );

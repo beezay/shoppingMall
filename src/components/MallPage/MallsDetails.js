@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
-import uuid from "react-uuid";
 import { fireStore, storage } from "../../firebase/firebase";
-import {
-  resetShops,
-  selectedAllMalls,
-  SelectIsAdmin,
-} from "../../redux/MallSlice";
+import { SelectIsAdmin } from "../../redux/MallSlice";
 import { deleteShopStorage } from "../../utils/Delete";
-import Alert from "../common/Alert";
+import AddedToast from "../common/AddedToast";
 import Card from "../common/Card";
+import DeleteAlert from "../common/DeleteAlert";
 import Loader from "../common/Loader";
-import Malls from "../HomePage/Malls";
+import NoSearchedData from "../common/NoSearchedData";
+import ShopAddForm from "../common/ShopAddForm";
 import SearchMall from "../Search/SearchMall";
 import "./Details.css";
 const MallsDetails = () => {
@@ -26,15 +23,15 @@ const MallsDetails = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filterShops, setFilterShops] = useState([]);
   const [isLoding, setIsLoading] = useState(true);
+  const [deleteToast, setDeleteToast] = useState(false);
+  const [toast, setToast] = useState(false);
+  const [searchError, setSearchError] = useState(false);
+  const [imageError, setImageError] = useState(null);
+  const [images, setImages] = useState([]);
 
   const isAdmin = useSelector(SelectIsAdmin);
 
-  const {
-    handleSubmit,
-    formState: { errors },
-    register,
-    reset,
-  } = useForm();
+  const { reset } = useForm();
 
   useEffect(() => {
     const fetchMalls = async () => {
@@ -72,10 +69,27 @@ const MallsDetails = () => {
     history.push(`/editMall/${id}`);
   };
 
+  const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
+
   const handleAddedShopImages = (e) => {
-    const shopImageList = Object.values(e.target.files);
-    console.log(shopImageList);
-    setShopImages(shopImageList);
+    setShopImages([]);
+    const imageList = Object.values(e.target.files).map((file) => {
+      let imgList = [];
+      if (imageTypes.includes(file.type)) {
+        imgList.push(file);
+        setImageError("");
+      } else {
+        setImageError("Please select only PNG/JPG");
+        return;
+      }
+      const shopImageList = Object.values(e.target.files);
+      console.log(shopImageList);
+      setShopImages(shopImageList);
+      return imgList;
+    });
+    console.log("Check Return");
+    console.log(shopImages);
+    setImages(imageList);
   };
 
   const shopImageUploads = async (shop_id) => {
@@ -99,6 +113,11 @@ const MallsDetails = () => {
   };
 
   const handleAddShopSubmit = async (data) => {
+    if (shopImages.length <= 0) {
+      console.log("done");
+      setImageError("Please select at least one Image");
+      return;
+    }
     setIsSubmitting(true);
     const shop_id = Date.now().toString();
     console.log(data);
@@ -127,8 +146,12 @@ const MallsDetails = () => {
     setFilterShops([...dbShops, shopData]);
     setMall(newMall);
     setShopImages([]);
+    setToast(true);
     setIsSubmitting(false);
     setAddShopStatus(false);
+    setTimeout(() => {
+      setToast(false);
+    }, 1000);
   };
   console.log("Mall", mall);
 
@@ -140,8 +163,10 @@ const MallsDetails = () => {
         shop.shopName.match(searchRegex)
       );
       console.log(searchedShop);
+      searchedShop?.length <= 0 && setSearchError(true);
       setFilterShops(searchedShop);
     } else {
+      setSearchError(false);
       setFilterShops(mall.shops);
     }
   };
@@ -155,71 +180,35 @@ const MallsDetails = () => {
 
       await deleteShopStorage(mallForDelete, mallId, shopId);
       setIsLoading(false);
+      setDeleteToast(true);
+      setTimeout(() => {
+        setDeleteToast(false);
+      }, 1500);
     }
   };
+
+  const onClose = () => {
+    setAddShopStatus(false);
+    setImageError("");
+    setShopImages([]);
+  };
+
   return (
     <>
+      {toast && <AddedToast />}
+      {deleteToast && <DeleteAlert />}
       {isLoding && <Loader />}
       {addShopStatus && (
         <div className="add-shop-modal">
           <div className="add-shop-wrapper">
-            <div className="form-wrapper">
-              <p className="close-btn" onClick={() => setAddShopStatus(false)}>
-                X
-              </p>
-              <form onSubmit={handleSubmit(handleAddShopSubmit)}>
-                <div className="form-floating">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="floatingInput"
-                    defaultValue=""
-                    placeholder="Name of the Shop"
-                    {...register("shopName", { required: true })}
-                  />
-                  {/* <label htmlFor="floatingInput">Mall Name</label> */}
-                  {errors.shopName && <Alert title="Please write about Shop" />}
-                </div>
-                <div className="form-floating">
-                  <textarea
-                    type="text"
-                    className="form-control"
-                    id="floatingPassword"
-                    defaultValue=""
-                    placeholder="Description"
-                    {...register("shopDesc", { required: true })}
-                  />
-                  {/* <label htmlFor="floatingPassword">Address</label> */}
-                  {errors.shopDesc && <Alert title="Please write about Shop" />}
-                </div>
-
-                <div className="form-floating mt-2">
-                  <label htmlFor="file-uploads" className="image-add-shop">
-                    <input
-                      id="file-uploads"
-                      type="file"
-                      multiple
-                      onChange={handleAddedShopImages}
-                    />
-                    <span>Upload IMAGEs + </span>
-                  </label>
-                  <span className="py-0 mt-2 text-info font-weight-light">
-                    First Image will be shown as Thumbnail
-                  </span>
-                  {shopImages &&
-                    shopImages.map((x) => (
-                      <p className="text-dark"> {x.name} </p>
-                    ))}
-                </div>
-                <button
-                  className="btn btn-lg btn-warning mt-2 "
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "SAVING..." : "SAVE SHOP"}
-                </button>
-              </form>
-            </div>
+            <ShopAddForm
+              onClose={onClose}
+              onSubmit={handleAddShopSubmit}
+              onChange={handleAddedShopImages}
+              shopImages={shopImages}
+              isSubmitting={isSubmitting}
+              imageError={imageError}
+            />
           </div>
         </div>
       )}
@@ -260,6 +249,9 @@ const MallsDetails = () => {
               />
             </div>
             <div className="container-fluid text-center">
+              <div className="searcherror mt-4 w-75 ml-auto mr-auto">
+                {searchError && <NoSearchedData />}
+              </div>
               <div className=" mt-5 shop-card-container">
                 {filterShops &&
                   filterShops.map((shop) => (
