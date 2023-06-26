@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <a className="navbar-brand" href="/">
-        WEN
+        MALL
       </a>
       <button
         className="navbar-toggler"
@@ -50,24 +50,6 @@ const Navbar = () => {
                 {isAdmin ? "Logout" : "Admin Login"}
               </a>
             </div>
-            {/* <a
-              className="nav-link dropdown-toggle"
-              data-toggle="dropdown"
-              href="#"
-              role="button"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i className="fas fa-user admin-user" />
-            </a>
-            <div className="dropdown-menu">
-              <a className="dropdown-item" href="#">
-                Setting
-              </a>
-              <a className="dropdown-item" href="#">
-                Logout
-              </a>
-            </div> */}
           </li>
         </ul>
       </div>
